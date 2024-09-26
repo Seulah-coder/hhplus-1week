@@ -78,8 +78,11 @@ class PointServiceTest {
 
     }
 
+    /**
+     * 1번 통합 테스트 : 출금과 입금 동시에
+     */
     @Test
-    void pointIntegrationTest(){
+    void pointIntegrationTestOne(){
         long userId = 1L;
         CompletableFuture.allOf(
             CompletableFuture.runAsync(() -> pointService.chargeUserPoint(userId, 300)),
@@ -91,6 +94,57 @@ class PointServiceTest {
 
         UserPoint userPoint = pointService.getUserPoint(userId);
         Assertions.assertEquals(userPoint.point(), 300 + 500 + 40000 - 2000 - 3000);
+        List<PointHistory> historyList = pointService.getUserPointHistories(userId);
+        System.out.println("historyList = " + historyList);
+    }
+
+    /**
+     * 2번 통합 테스트 : 내 돈 보다 많은 차감 요청이 들어올때
+     */
+    @Test
+    void pointIntegrationTestTwo(){
+        UserPoint userPoint = pointService.chargeUserPoint(1L, 5000L);
+        pointService.useUserPoint(1L, 6000L);
+    }
+
+    /**
+     * 3번 통합 테스트 : 동시에 입금 요청
+     */
+    @Test
+    void pointIntegrationTestThree(){
+        long userId = 1L;
+        CompletableFuture.allOf(
+                CompletableFuture.runAsync(() -> pointService.chargeUserPoint(userId, 300)),
+                CompletableFuture.runAsync(() -> pointService.chargeUserPoint(userId, 500)),
+                CompletableFuture.runAsync(() -> pointService.chargeUserPoint(userId, 40000)),
+                CompletableFuture.runAsync(() -> pointService.chargeUserPoint(userId, 2000)),
+                CompletableFuture.runAsync(() -> pointService.chargeUserPoint(userId, 3000))
+        ).join();
+
+        UserPoint userPoint = pointService.getUserPoint(userId);
+        Assertions.assertEquals(userPoint.point(), 300 + 500 + 40000 + 2000 + 3000);
+        List<PointHistory> historyList = pointService.getUserPointHistories(userId);
+        System.out.println("historyList = " + historyList);
+    }
+
+
+    /**
+     * 4번 통합 테스트 : 동시에 출금 요청
+     */
+    @Test
+    void pointIntegrationTestFour(){
+        long userId = 1L;
+        pointService.chargeUserPoint(userId, 100000);
+        CompletableFuture.allOf(
+                CompletableFuture.runAsync(() -> pointService.useUserPoint(userId, 300)),
+                CompletableFuture.runAsync(() -> pointService.useUserPoint(userId, 500)),
+                CompletableFuture.runAsync(() -> pointService.useUserPoint(userId, 40000)),
+                CompletableFuture.runAsync(() -> pointService.useUserPoint(userId, 2000)),
+                CompletableFuture.runAsync(() -> pointService.useUserPoint(userId, 3000))
+        ).join();
+
+        UserPoint userPoint = pointService.getUserPoint(userId);
+        Assertions.assertEquals(userPoint.point(), 100000 - 300 - 500 - 40000 - 2000 - 3000);
         List<PointHistory> historyList = pointService.getUserPointHistories(userId);
         System.out.println("historyList = " + historyList);
     }
