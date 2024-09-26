@@ -105,6 +105,7 @@ class PointServiceTest {
     void pointIntegrationTestTwo(){
         UserPoint userPoint = pointService.chargeUserPoint(1L, 5000L);
         pointService.useUserPoint(1L, 6000L);
+        //exception발생
     }
 
     /**
