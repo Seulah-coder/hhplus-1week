@@ -4,16 +4,13 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @SpringBootTest
-class PointServiceTest {
+public class PointServiceIntergrationTest {
 
     @Autowired
     PointService pointService;
@@ -86,11 +83,11 @@ class PointServiceTest {
     void pointIntegrationTestOne(){
         long userId = 1L;
         CompletableFuture.allOf(
-            CompletableFuture.runAsync(() -> pointService.chargePoints(userId, 300L)),
-            CompletableFuture.runAsync(() -> pointService.chargePoints(userId, 500L)),
-            CompletableFuture.runAsync(() -> pointService.chargePoints(userId, 40000L)),
-            CompletableFuture.runAsync(() -> pointService.usePoint(userId, 2000L)),
-            CompletableFuture.runAsync(() -> pointService.usePoint(userId, 3000L))
+                CompletableFuture.runAsync(() -> pointService.chargePoints(userId, 300L)),
+                CompletableFuture.runAsync(() -> pointService.chargePoints(userId, 500L)),
+                CompletableFuture.runAsync(() -> pointService.chargePoints(userId, 40000L)),
+                CompletableFuture.runAsync(() -> pointService.usePoint(userId, 2000L)),
+                CompletableFuture.runAsync(() -> pointService.usePoint(userId, 3000L))
         ).join();
 
         UserPoint userPoint = pointService.getUserPoint(userId);
