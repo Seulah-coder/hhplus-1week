@@ -26,7 +26,7 @@ public class PointController {
     public UserPoint point(
             @PathVariable long id
     ) {
-        return new UserPoint(0, 0, 0);
+        return pointService.getUserPoint(id);
     }
 
     /**
@@ -36,18 +36,18 @@ public class PointController {
     public List<PointHistory> history(
             @PathVariable long id
     ) {
-        return List.of();
+        return pointService.getUserPointHistories(id);
     }
 
     /**
      * TODO - 특정 유저의 포인트를 충전하는 기능을 작성해주세요.
      */
     @PatchMapping("{id}/charge")
-    public CompletableFuture<UserPoint> charge(
+    public UserPoint charge(
             @PathVariable long id,
             @RequestBody long amount
     ) {
-        return pointService.chargePoints(id, amount);
+        return pointService.chargePoint(id, amount);
     }
 
     /**
@@ -58,6 +58,6 @@ public class PointController {
             @PathVariable long id,
             @RequestBody long amount
     ) {
-        return pointService.useUserPoint(id, amount);
+        return pointService.usePoint(id, amount);
     }
 }
