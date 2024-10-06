@@ -2,7 +2,6 @@ package io.hhplus.tdd.point;
 
 import io.hhplus.tdd.database.PointHistoryTable;
 import io.hhplus.tdd.database.UserPointTable;
-import org.apache.catalina.User;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -13,7 +12,6 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 import static org.mockito.Mockito.when;
 
@@ -23,8 +21,6 @@ class PointServiceTest {
     @InjectMocks
     private PointService pointService;
 
-    @Mock
-    private UserPointTable userPointTable;
 
     @Mock
     private PointHistoryTable pointHistoryTable;

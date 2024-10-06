@@ -5,13 +5,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 @RestController
 @RequestMapping("/point")
 public class PointController {
-
-    private static final Logger log = LoggerFactory.getLogger(PointController.class);
 
     private final PointService pointService;
 

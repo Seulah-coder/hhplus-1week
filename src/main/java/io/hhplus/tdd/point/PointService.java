@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -29,9 +28,9 @@ public class PointService {
 
     /**
      * 포인트를 충전한다
-     * @param userId
-     * @param amount
-     * @return
+     * @param userId = 유저 아이디
+     * @param amount = 금액
+     * @return = UserPoint
      */
     public UserPoint chargePoint(Long userId, Long amount){
             Lock lock = getUserLock(userId); //같은 유저임을 확인 하고 lock을 획득
@@ -88,8 +87,8 @@ public class PointService {
 
     /**
      * 유저 포인트를 조회한다
-     * @param userId
-     * @return
+     * @param userId = 유저 아이디
+     * @return = UserPoint 객체
      */
     public UserPoint getUserPoint(long userId){
 
@@ -102,8 +101,8 @@ public class PointService {
 
     /**
      *  유저 포인트 히스토리를 조회한다
-     * @param userId
-     * @return
+     * @param userId = 유저아이디
+     * @return = PointHistory List
      */
     public List<PointHistory> getUserPointHistories(long userId){
         List<PointHistory> result = pointHistoryTable.selectAllByUserId(userId);

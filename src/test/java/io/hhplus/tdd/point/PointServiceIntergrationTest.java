@@ -45,7 +45,7 @@ public class PointServiceIntergrationTest {
     }
 
     @Test
-    void chargeUserPoint() throws ExecutionException, InterruptedException {
+    void chargeUserPoint() {
         long userId = 1L;
         long amount = 2000L;
 
