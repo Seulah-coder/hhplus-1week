@@ -7,7 +7,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 
 @SpringBootTest
 public class PointServiceIntergrationTest {
@@ -95,10 +94,18 @@ public class PointServiceIntergrationTest {
      * 2번 통합 테스트 : 내 돈 보다 많은 차감 요청이 들어올때
      */
     @Test
-    void pointIntegrationTestTwo(){
-        pointService.chargePoint(1L, 5000L);
-        pointService.usePoint(1L, 6000L);
-        //exception발생!!
+    void pointIntegrationTestTwo() {
+
+
+        long currentAmount = 5000L;
+        try {
+            pointService.chargePoint(1L, currentAmount);
+            pointService.usePoint(1L, 6000L);
+        } catch (IllegalArgumentException e) {
+            //exception발생!!
+            Assertions.assertEquals("사용 하려는 포인트가 현재 가지고 있는 포인트보다 큽니다. 현재 잔액 : " + currentAmount, e.getMessage());
+        }
+
     }
 
     /**
